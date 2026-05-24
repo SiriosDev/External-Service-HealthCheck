@@ -14,12 +14,7 @@
 
 [![Ghcr Pulls](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fghcr-badge.elias.eu.org%2Fapi%2Fsiriosdev%2Fexternal-service-healthcheck&query=downloadCount&style=for-the-badge&logo=github&label=Pulls&color=5a61a4)
 ](https://github.com/SiriosDev/External-Service-HealthCheck/pkgs/container/external-service-healthcheck)
-[![Ghcr Image](https://img.shields.io/badge/ghcr-ghcr.io%2Fsiriosdev%2Fexternal--service--healthcheck-5a61a4?style=for-the-badge&logo=github&logoColor=white)
-](https://github.com/SiriosDev/External-Service-HealthCheck/pkgs/container/external-service-healthcheck)
-
 [![Docker Pulls](https://img.shields.io/docker/pulls/siriosdev/external-service-healthcheck?style=for-the-badge&logo=docker&logoColor=white&label=Pulls)
-](https://hub.docker.com/r/siriosdev/external-service-healthcheck)
-[![Docker Image](https://img.shields.io/badge/dockerhub-siriosdev%2Fexternal--service--healthcheck-2c64bb?style=for-the-badge&logo=docker&logoColor=white)
 ](https://hub.docker.com/r/siriosdev/external-service-healthcheck)
 
 
