@@ -8,7 +8,7 @@ if [ -z "$SERVICE" ]; then
 fi
 
 STATUS=$(docker inspect "$SERVICE" \
-  --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}' 2>/dev/null)
+  --format '{{if .State.Health}}{{.State.Health.Status}}{{else}}no-healthcheck{{end}}' 2> /dev/null)
 
 if [ "$STATUS" = "healthy" ]; then
   exit 0
