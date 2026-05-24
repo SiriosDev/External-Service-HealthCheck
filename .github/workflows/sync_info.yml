@@ -8,12 +8,16 @@ on:
     paths:
       - README.md
       - DESC.txt
+    paths-ignore:
+      - .github/workflows/*
   pull_request:
     branches:
       - main
     paths:
       - README.md
       - DESC.txt
+    paths-ignore:
+      - .github/workflows/*
 
 jobs:
   sync_description:
@@ -21,7 +25,6 @@ jobs:
     permissions:
       contents: read
       repository-projects: write
-      metadata: write
 
     steps:
       - name: Check out the repository
