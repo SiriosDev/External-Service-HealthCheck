@@ -90,17 +90,48 @@ jobs:
             echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:nightly"
             echo "ghcr.io/${IMAGE_OWNER_LC}/external-service-healthcheck:nightly"
             if [ "$VERSION_CHANGED" = "true" ]; then
+              # Compute core version (strip prerelease/build metadata)
+              CORE="${VERSION%%[-+]*}"
+
+              # Build an array of dot-separated version components
+              IFS='.' read -ra parts <<< "$CORE"
+
+              # Generate derived tags: full core, progressively shorter (1.2, 1)
+              derived_tags=()
+              for ((i=${#parts[@]}; i>=1; i--)); do
+                tag=$(IFS='.'; echo "${parts[*]:0:$i}")
+                derived_tags+=("$tag")
+              done
+
               if [ "$CHANNEL_TAG" = "stable" ]; then
+                # For stable releases: push the exact version (may include prerelease),
+                # then the derived numeric tags, plus 'latest' and 'stable'.
                 echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:${VERSION}"
+                for t in "${derived_tags[@]}"; do
+                  echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:${t}"
+                done
                 echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:latest"
                 echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:stable"
+
                 echo "ghcr.io/${IMAGE_OWNER_LC}/external-service-healthcheck:${VERSION}"
+                for t in "${derived_tags[@]}"; do
+                  echo "ghcr.io/${IMAGE_OWNER_LC}/external-service-healthcheck:${t}"
+                done
                 echo "ghcr.io/${IMAGE_OWNER_LC}/external-service-healthcheck:latest"
                 echo "ghcr.io/${IMAGE_OWNER_LC}/external-service-healthcheck:stable"
               else
+                # For prereleases: push the exact version and the channel tag,
+                # also include derived numeric tags so short tags map to the core.
                 echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:${VERSION}"
+                for t in "${derived_tags[@]}"; do
+                  echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:${t}"
+                done
                 echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:${CHANNEL_TAG}"
+
                 echo "ghcr.io/${IMAGE_OWNER_LC}/external-service-healthcheck:${VERSION}"
+                for t in "${derived_tags[@]}"; do
+                  echo "ghcr.io/${IMAGE_OWNER_LC}/external-service-healthcheck:${t}"
+                done
                 echo "ghcr.io/${IMAGE_OWNER_LC}/external-service-healthcheck:${CHANNEL_TAG}"
               fi
             fi
