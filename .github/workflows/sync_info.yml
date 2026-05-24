@@ -1,6 +1,6 @@
 name: Sync README and Description
 on:
-  
+
   workflow_dispatch: {}
   push:
     branches:
@@ -19,7 +19,9 @@ jobs:
   sync_description:
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
+      repository-projects: write
+      metadata: write
 
     steps:
       - name: Check out the repository
