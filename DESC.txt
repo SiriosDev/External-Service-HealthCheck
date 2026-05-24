@@ -1,1 +1,1 @@
-A Small containerized healthcheck helper for container outside of your stack
+A Small containerized healthcheck helper for container outside of your stack.
