@@ -88,9 +88,7 @@ jobs:
           {
             echo "tags<<EOF"
             echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:nightly"
-            echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:${{ github.sha }}"
             echo "ghcr.io/${IMAGE_OWNER_LC}/external-service-healthcheck:nightly"
-            echo "ghcr.io/${IMAGE_OWNER_LC}/external-service-healthcheck:${{ github.sha }}"
             if [ "$VERSION_CHANGED" = "true" ]; then
               if [ "$CHANNEL_TAG" = "stable" ]; then
                 echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:${VERSION}"
