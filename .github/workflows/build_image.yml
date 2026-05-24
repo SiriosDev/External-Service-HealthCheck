@@ -4,14 +4,14 @@ on:
     branches:
       - main
     paths-ignore:
-      - .github/workflows/build_image.yml
+      - .github/workflows/*
       - README.md
       - DESC.txt
   pull_request:
     branches:
       - main
     paths-ignore:
-      - .github/workflows/build_image.yml
+      - .github/workflows/*
       - README.md
       - DESC.txt
 
