@@ -5,11 +5,15 @@ on:
       - main
     paths-ignore:
       - .github/workflows/build_image.yml
+      - README.md
+      - DESC.txt
   pull_request:
     branches:
       - main
     paths-ignore:
       - .github/workflows/build_image.yml
+      - README.md
+      - DESC.txt
 
 jobs:
   build:
