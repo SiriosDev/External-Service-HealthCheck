@@ -32,7 +32,7 @@ jobs:
         id: description
         run: |
           if [ -f DESC.txt ]; then
-            DESCRIPTION=$(tr -d '[:space:]' < DESC.txt)
+            DESCRIPTION=$(cat DESC.txt)
           else
             DESCRIPTION=""
           fi
@@ -40,6 +40,8 @@ jobs:
       
       - name: Update GitHub repository description
         run: gh repo edit --description "${{ steps.desc.outputs.value }}"
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Update Docker Hub description
         uses: peter-evans/dockerhub-description@v5
