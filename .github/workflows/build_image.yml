@@ -3,6 +3,8 @@ on:
   push:
     branches:
       - main
+    tags:
+      - '*'
     paths-ignore:
       - .github/workflows/*
       - README.md
@@ -31,19 +33,17 @@ jobs:
           fetch-depth: 0
 
       - name: Determine image version
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          # Use VERSION.txt as the source of truth for release tags.
-          if [ -f VERSION.txt ]; then
-            VERSION=$(tr -d '[:space:]' < VERSION.txt)
+          if [ "$REF_TYPE" = "tag" ]; then
+            VERSION="$REF_NAME"
           else
-            VERSION=""
+            VERSION="latest"
           fi
 
-          if [ -n "$VERSION" ]; then
-            echo "IMAGE_VERSION=$VERSION" >> $GITHUB_ENV
-          else
-            echo "IMAGE_VERSION=latest" >> $GITHUB_ENV
-          fi
+          echo "IMAGE_VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: Normalize GitHub owner for image tags
         run: |
@@ -54,24 +54,14 @@ jobs:
         shell: bash
         env:
           EVENT_NAME: ${{ github.event_name }}
-          PUSH_BEFORE_SHA: ${{ github.event.before }}
-          PR_BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          CURRENT_SHA: ${{ github.sha }}
+          REF_TYPE: ${{ github.ref_type }}
         run: |
           set -euo pipefail
 
           VERSION="$IMAGE_VERSION"
-          BASE_SHA="$PUSH_BEFORE_SHA"
-          if [ "$EVENT_NAME" = "pull_request" ]; then
-            BASE_SHA="$PR_BASE_SHA"
-          fi
-
-          VERSION_CHANGED=true
-          if [ -n "$BASE_SHA" ] && [ "$BASE_SHA" != "0000000000000000000000000000000000000000" ]; then
-            VERSION_CHANGED=false
-            if git diff --name-only "$BASE_SHA" "$CURRENT_SHA" -- VERSION.txt | grep -q .; then
-              VERSION_CHANGED=true
-            fi
+          VERSION_CHANGED=false
+          if [ "$EVENT_NAME" = "push" ] && [ "$REF_TYPE" = "tag" ]; then
+            VERSION_CHANGED=true
           fi
 
           CHANNEL_TAG="stable"
