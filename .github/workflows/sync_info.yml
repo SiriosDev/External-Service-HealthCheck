@@ -14,13 +14,10 @@ on:
       - DESC.txt
 
 jobs:
-  build:
+  sync_description:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      packages: write
-      attestations: write
-      id-token: write
+      contents: write
 
     steps:
       - name: Check out the repository
@@ -29,15 +26,9 @@ jobs:
           fetch-depth: 0
 
       - name: Read Desc
-        id: description
-        run: |
-          if [ -f DESC.txt ]; then
-            DESCRIPTION=$(cat DESC.txt)
-          else
-            DESCRIPTION=""
-          fi
-          echo "DESCRIPTION=$DESCRIPTION" >> $GITHUB_ENV
-      
+        id: desc
+        run: echo "value=$(cat DESC.txt)" >> $GITHUB_OUTPUT
+
       - name: Update GitHub repository description
         run: gh repo edit --description "${{ steps.desc.outputs.value }}"
         env:
