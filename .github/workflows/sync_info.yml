@@ -1,0 +1,51 @@
+name: Sync README and Description
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - README.md
+      - DESC.txt
+  pull_request:
+    branches:
+      - main
+    paths:
+      - README.md
+      - DESC.txt
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      attestations: write
+      id-token: write
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Read Desc
+        id: description
+        run: |
+          if [ -f DESC.txt ]; then
+            DESCRIPTION=$(tr -d '[:space:]' < DESC.txt)
+          else
+            DESCRIPTION=""
+          fi
+          echo "DESCRIPTION=$DESCRIPTION" >> $GITHUB_ENV
+      
+      - name: Update GitHub repository description
+        run: gh repo edit --description "${{ steps.desc.outputs.value }}"
+
+      - name: Update Docker Hub description
+        uses: peter-evans/dockerhub-description@v5
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          repository: "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck"
+          short-description: ${{ steps.desc.outputs.value }}
+          readme-filepath: ./README.md
