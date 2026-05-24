@@ -1,4 +1,4 @@
-name: Sync README and Description
+name: Sync Info
 on:
 
   workflow_dispatch: {}
