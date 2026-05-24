@@ -1,5 +1,7 @@
 name: Sync README and Description
 on:
+  
+  workflow_dispatch: {}
   push:
     branches:
       - main
