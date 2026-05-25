@@ -23,9 +23,9 @@ External Service Health Check is a small containerized helper designed with stac
 The check is driven by the `TARGET_SERVICE` environment variable. If the target container defines a Docker healthcheck and reports `healthy`, this container is considered `healthy`. Otherwise, it is considered `unhealthy`. If the target container does not define a Docker healthcheck, the script also reports `unhealthy`.
 
 > [!WARNING]
-> This image exists to solve a specific personal need. In practice, it is a continuously running container with a healthcheck script and and an access to the Docker socket, so anyone with execution access to it can interact with the Docker daemon through that socket.
-> At minimum, I recommend mounting the socket as read-only.
-> I have not yet explored a reliable way to further restrict access, so if you have suggestions, feel free to open an issue or a PR.
+> This image exists to solve a specific personal need. In practice, it is a continuously running container with a healthcheck script and and an access to the Docker socket, so anyone with execution access to it can interact with the Docker daemon through that socket.  
+> At minimum, I recommend mounting the socket as read-only.  
+> I have not yet explored a reliable way to further restrict access, so if you have suggestions, feel free to open an issue or a PR.  
 
 ## How It Works
 
