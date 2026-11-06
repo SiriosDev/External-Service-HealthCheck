@@ -1,21 +1,8 @@
 name: Build Image
 on:
   push:
-    branches:
-      - main
     tags:
-      - '*'
-    paths-ignore:
-      - .github/workflows/*
-      - README.md
-      - DESC.txt
-  pull_request:
-    branches:
-      - main
-    paths-ignore:
-      - .github/workflows/*
-      - README.md
-      - DESC.txt
+      - "*"
 
 jobs:
   build:
@@ -55,78 +42,9 @@ jobs:
         env:
           EVENT_NAME: ${{ github.event_name }}
           REF_TYPE: ${{ github.ref_type }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          set -euo pipefail
-
-          VERSION="$IMAGE_VERSION"
-          VERSION_CHANGED=false
-          if [ "$EVENT_NAME" = "push" ] && [ "$REF_TYPE" = "tag" ]; then
-            VERSION_CHANGED=true
-          fi
-
-          CHANNEL_TAG="stable"
-          if [ "$VERSION" != "latest" ]; then
-            case "$VERSION" in
-              *-*)
-                prerelease="${VERSION#*-}"
-                CHANNEL_TAG="${prerelease%%.*}"
-                CHANNEL_TAG="${CHANNEL_TAG%%+*}"
-                ;;
-            esac
-          fi
-
-          {
-            echo "tags<<EOF"
-            echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:nightly"
-            echo "ghcr.io/${IMAGE_OWNER_LC}/external-service-healthcheck:nightly"
-            if [ "$VERSION_CHANGED" = "true" ]; then
-              # Compute core version (strip prerelease/build metadata)
-              CORE="${VERSION%%[-+]*}"
-
-              # Build an array of dot-separated version components
-              IFS='.' read -ra parts <<< "$CORE"
-
-              # Generate derived tags: full core, progressively shorter (1.2, 1)
-              derived_tags=()
-              for ((i=${#parts[@]}; i>=1; i--)); do
-                tag=$(IFS='.'; echo "${parts[*]:0:$i}")
-                derived_tags+=("$tag")
-              done
-
-              if [ "$CHANNEL_TAG" = "stable" ]; then
-                # For stable releases: push the exact version (may include prerelease),
-                # then the derived numeric tags, plus 'latest' and 'stable'.
-                echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:${VERSION}"
-                for t in "${derived_tags[@]}"; do
-                  echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:${t}"
-                done
-                echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:latest"
-                echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:stable"
-
-                echo "ghcr.io/${IMAGE_OWNER_LC}/external-service-healthcheck:${VERSION}"
-                for t in "${derived_tags[@]}"; do
-                  echo "ghcr.io/${IMAGE_OWNER_LC}/external-service-healthcheck:${t}"
-                done
-                echo "ghcr.io/${IMAGE_OWNER_LC}/external-service-healthcheck:latest"
-                echo "ghcr.io/${IMAGE_OWNER_LC}/external-service-healthcheck:stable"
-              else
-                # For prereleases: push the exact version and the channel tag,
-                # also include derived numeric tags so short tags map to the core.
-                echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:${VERSION}"
-                for t in "${derived_tags[@]}"; do
-                  echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:${t}"
-                done
-                echo "${{ secrets.DOCKER_USERNAME }}/external-service-healthcheck:${CHANNEL_TAG}"
-
-                echo "ghcr.io/${IMAGE_OWNER_LC}/external-service-healthcheck:${VERSION}"
-                for t in "${derived_tags[@]}"; do
-                  echo "ghcr.io/${IMAGE_OWNER_LC}/external-service-healthcheck:${t}"
-                done
-                echo "ghcr.io/${IMAGE_OWNER_LC}/external-service-healthcheck:${CHANNEL_TAG}"
-              fi
-            fi
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
+          bash .github/scripts/prepare-image-tags.sh
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
@@ -157,3 +75,16 @@ jobs:
           platforms: linux/386,linux/amd64,linux/arm/v7,linux/arm64
           push: true
           tags: ${{ steps.prepare_image_tags.outputs.tags }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Create release (source code only)
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          bash .github/scripts/create-release.sh
