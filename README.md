@@ -11,13 +11,11 @@
 
 [![Build](https://img.shields.io/github/actions/workflow/status/SiriosDev/external-service-healthcheck/build_image.yml?style=for-the-badge&label=Build)][BUILD]
 [![Sync](https://img.shields.io/github/actions/workflow/status/SiriosDev/external-service-healthcheck/sync_info.yml?style=for-the-badge&label=Sync)][SYNC]
-
-[BUILD]: https://github.com/SiriosDev/External-Service-HealthCheck/actions/workflows/build_image.yml
-[SYNC]: https://github.com/SiriosDev/External-Service-HealthCheck/actions/workflows/sync_info.yml
-
 [![Ghcr Pulls](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fghcr-badge.elias.eu.org%2Fapi%2Fsiriosdev%2Fexternal-service-healthcheck&query=downloadCount&style=for-the-badge&logo=github&label=Pulls&color=5a61a4)][GHCR_PULL]
 [![Docker Pulls](https://img.shields.io/docker/pulls/siriosdev/external-service-healthcheck?style=for-the-badge&logo=docker&logoColor=white&label=Pulls)][DCKR_PULL]
 
+[BUILD]: https://github.com/SiriosDev/External-Service-HealthCheck/actions/workflows/build_image.yml
+[SYNC]: https://github.com/SiriosDev/External-Service-HealthCheck/actions/workflows/sync_info.yml
 [GHCR_PULL]: https://github.com/SiriosDev/External-Service-HealthCheck/pkgs/container/external-service-healthcheck
 [DCKR_PULL]: https://hub.docker.com/r/siriosdev/external-service-healthcheck
 
