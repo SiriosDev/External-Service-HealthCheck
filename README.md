@@ -1,22 +1,25 @@
 # External Service Health Check
 
-[![Repository](https://img.shields.io/badge/github-SiriosDev%2FExternal--Service--HealthCheck-5a61a4?style=for-the-badge&logo=github&logoColor=white)
-](https://github.com/SiriosDev/External-Service-HealthCheck)
-[![Version](https://img.shields.io/github/v/tag/SiriosDev/External-Service-HealthCheck?style=for-the-badge&label=version&sort=semver)
-](https://github.com/SiriosDev/External-Service-HealthCheck)
-[![License](https://img.shields.io/github/license/SiriosDev/External-Service-HealthCheck?style=for-the-badge)
-](https://github.com/SiriosDev/External-Service-HealthCheck/blob/main/LICENSE)
+[![Repository](https://img.shields.io/badge/github-SiriosDev%2FExternal--Service--HealthCheck-5a61a4?style=for-the-badge&logo=github&logoColor=white)][REPO]
+[![Version](https://img.shields.io/github/v/tag/SiriosDev/External-Service-HealthCheck?style=for-the-badge&label=version&sort=semver)][VERSION]
+[![License](https://img.shields.io/github/license/SiriosDev/External-Service-HealthCheck?style=for-the-badge)][LICENSE]
 
-[![Build](https://img.shields.io/github/actions/workflow/status/SiriosDev/external-service-healthcheck/build_image.yml?style=for-the-badge&label=Build)
-](https://github.com/SiriosDev/External-Service-HealthCheck/actions/workflows/build_image.yml)
-[![Sync](https://img.shields.io/github/actions/workflow/status/SiriosDev/external-service-healthcheck/sync_info.yml?style=for-the-badge&label=Sync)
-](https://github.com/SiriosDev/External-Service-HealthCheck/actions/workflows/sync_info.yml)
+[REPO]: https://github.com/SiriosDev/External-Service-HealthCheck
+[VERSION]: https://ghcr.io/siriosdev/external-service-healthcheck:latest
+[LICENSE]: https://github.com/SiriosDev/External-Service-HealthCheck/blob/main/LICENSE
+[REPO]: https://github.com/SiriosDev/External-Service-HealthCheck
 
-[![Ghcr Pulls](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fghcr-badge.elias.eu.org%2Fapi%2Fsiriosdev%2Fexternal-service-healthcheck&query=downloadCount&style=for-the-badge&logo=github&label=Pulls&color=5a61a4)
-](https://github.com/SiriosDev/External-Service-HealthCheck/pkgs/container/external-service-healthcheck)
-[![Docker Pulls](https://img.shields.io/docker/pulls/siriosdev/external-service-healthcheck?style=for-the-badge&logo=docker&logoColor=white&label=Pulls)
-](https://hub.docker.com/r/siriosdev/external-service-healthcheck)
+[![Build](https://img.shields.io/github/actions/workflow/status/SiriosDev/external-service-healthcheck/build_image.yml?style=for-the-badge&label=Build)][BUILD]
+[![Sync](https://img.shields.io/github/actions/workflow/status/SiriosDev/external-service-healthcheck/sync_info.yml?style=for-the-badge&label=Sync)][SYNC]
 
+[BUILD]: https://github.com/SiriosDev/External-Service-HealthCheck/actions/workflows/build_image.yml
+[SYNC]: https://github.com/SiriosDev/External-Service-HealthCheck/actions/workflows/sync_info.yml
+
+[![Ghcr Pulls](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fghcr-badge.elias.eu.org%2Fapi%2Fsiriosdev%2Fexternal-service-healthcheck&query=downloadCount&style=for-the-badge&logo=github&label=Pulls&color=5a61a4)][GHCR_PULL]
+[![Docker Pulls](https://img.shields.io/docker/pulls/siriosdev/external-service-healthcheck?style=for-the-badge&logo=docker&logoColor=white&label=Pulls)][DCKR_PULL]
+
+[GHCR_PULL]: https://github.com/SiriosDev/External-Service-HealthCheck/pkgs/container/external-service-healthcheck
+[DCKR_PULL]: https://hub.docker.com/r/siriosdev/external-service-healthcheck
 
 External Service Health Check is a small containerized helper designed with stack-based deployments in mind. It checks the health status of a containerized service from another stack, which is useful when a service depends on another service running in another stacks for wherever technical or logistical reasons.
 
