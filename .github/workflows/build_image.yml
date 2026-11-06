@@ -83,6 +83,11 @@ jobs:
       contents: write
 
     steps:
+      - name: Check out the repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
       - name: Create release (source code only)
         env:
           GH_TOKEN: ${{ github.token }}
